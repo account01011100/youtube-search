@@ -11,6 +11,7 @@
 - `libcurl` library for making HTTP requests
 - `cJSON` library for JSON parsing
 - `mpv` installed on your system for video playback
+- `UTF-8` compatible terminal emulator
 
 ## Compiling
 
