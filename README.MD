@@ -17,6 +17,6 @@
 
   **Clone this repository and install dependencies**:
    ```bash
-   git clone https://github.com/YourUsername/youtube-search.git
+   git clone https://github.com/account01011100/youtube-search.git
    cd youtube-search
    make
