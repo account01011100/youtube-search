@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
-
-#define MAX_SEARCH_TERM_LENGTH 255
-#define PAYLOAD_LENGHT 80
+#include "constants.h"
 
 typedef struct {
   char *memory;
@@ -16,7 +14,7 @@ static size_t write_cb(void *contents, size_t size, size_t nmemb, void *userp) {
     MemoryStruct *mem = (MemoryStruct *)userp;
     char *ptr = realloc(mem->memory, mem->mem_size + realsize + 1);
 
-    if(!ptr) {
+    if (!ptr) {
         fprintf(stderr, "reallocating mem->memory failed\n");
         return 0;
     }
@@ -30,7 +28,7 @@ static size_t write_cb(void *contents, size_t size, size_t nmemb, void *userp) {
 }
 
 char *search(char *query) {
-    char payload[PAYLOAD_LENGHT+MAX_SEARCH_TERM_LENGTH];
+    char payload[strlen(SEARCH_PAYLOAD)+strlen(query)+1];
 
     MemoryStruct chunk;
     chunk.memory = malloc(1);
@@ -45,11 +43,11 @@ char *search(char *query) {
     if(curl) {
         struct curl_slist *headers = NULL;
 
-        headers = curl_slist_append(headers, "Content-Type: application/json");
+        headers = curl_slist_append(headers, SEARCH_HEADERS);
 
-        snprintf(payload, sizeof(payload), "{\"context\":{\"client\":{\"clientName\":\"WEB\",\"clientVersion\":\"2.20260206.01.00\"}},\"query\":\"%s\"}", query);
+        snprintf(payload, sizeof(payload), SEARCH_PAYLOAD, query);
 
-        curl_easy_setopt(curl, CURLOPT_URL, "https://www.youtube.com/youtubei/v1/search");
+        curl_easy_setopt(curl, CURLOPT_URL, SEARCH_URL);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
