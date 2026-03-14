@@ -4,15 +4,18 @@
 #include <stddef.h>
 
 typedef struct {
-    char title[256];
-    char length[256];
-    char channel[256];
-    char age[256];
-    char link[256];
-} VideoInfo;
+    char *title;
+    char *length;
+    char *channel;
+    char *age;
+    char *link;
+} videoInfo;
 
-extern size_t videoCount;
+typedef struct {
+    videoInfo *videos;
+    int count; 
+} videoArray;
 
-VideoInfo* parse_json(const char *jsonString);
+videoArray* parseJson(const char *jsonString);
 
 #endif

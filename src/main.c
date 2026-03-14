@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <curl/curl.h>
 #include <cjson/cJSON.h>
+
 #include "request.h"
 #include "parser.h"
 #include "tui.h"
@@ -19,20 +20,20 @@ int playVideo(char *link) {
     system(command);
 }
 
-void draw(VideoInfo *videos, int highlight) {
+void draw(videoArray *vidArr, int highlight) {
     clear();
-    for (int i = 0; i < videoCount; ++i) {
-            if (i == highlight) {
-                reverseVideo(true);
-            }
-            printf("%d) %s\n", i+1, videos[i].title);
-            if (i == highlight) {
-                reverseVideo(false);
-            }
+    for (int i = 0; i < vidArr->count; ++i) {
+        if (i == highlight) {
+            reverseVideo(true);
+        }
+        printf("%d) %s\n", i+1, vidArr->videos[i].title);
+        if (i == highlight) {
+            reverseVideo(false);
+        }
     }
 }
 
-void tui(VideoInfo *videos) {
+void tui(videoArray *vidArr) {
     int ch;
     int done;
     int highlight = 0;
@@ -44,7 +45,7 @@ void tui(VideoInfo *videos) {
     newt.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
-    draw(videos, highlight);
+    draw(vidArr, highlight);
 
     done = 0;
     while (!done) {
@@ -52,17 +53,17 @@ void tui(VideoInfo *videos) {
         switch (ch) {
             case 'w':
             case 'k':
-                highlight = (highlight > 0) ? highlight -1 : videoCount - 1;
-                draw(videos, highlight);
+                highlight = (highlight > 0) ? highlight -1 : vidArr->count - 1;
+                draw(vidArr, highlight);
                 break;
             case 's':
             case 'j':
-                highlight = (highlight + 1) % videoCount;
-                draw(videos, highlight);
+                highlight = (highlight + 1) % vidArr->count;
+                draw(vidArr, highlight);
                 break;
             case '\n':
             case 'p':
-                playVideo(videos[highlight].link);
+                playVideo(vidArr->videos[highlight].link);
                 break;
             case 'q':
                 done = 1;
@@ -74,21 +75,21 @@ void tui(VideoInfo *videos) {
 }
 
 int main(int argc, char *argv[]) {
-    //FILE* fptr; TBD
-    //fptr = fopen("config.txt", "r")
     char *json;
     char *query;
-    VideoInfo *videos;
+    char *post_url;
+    char *payload;
+    videoArray *vidArr;
+    
     query = argHelper(argc, argv);
     if (query != NULL) {
         json = search(argv[1]);
-        videos = parse_json(json);
+        vidArr = parseJson(json);
         free(json);
-        if (videos == NULL) {
+        if (vidArr == NULL) {
             return(1);
         } else {
-            tui(videos);
-            free(videos);
+            tui(vidArr);
         }
     }
     return(0);
