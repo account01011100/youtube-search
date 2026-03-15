@@ -26,14 +26,14 @@ void draw(videoArray *vidArr, int highlight) {
         if (i == highlight) {
             reverseVideo(true);
         }
-        printf("%d) %s\n", i+1, vidArr->videos[i].title);
+        printf("%d) %s\n %s %s %s\n", i+1, vidArr->videos[i].title, vidArr->videos[i].channel, vidArr->videos[i].length, vidArr->videos[i].age);
         if (i == highlight) {
             reverseVideo(false);
         }
     }
 }
 
-void tui(videoArray *vidArr) {
+bool tui(videoArray *vidArr) {
     int ch;
     int done;
     int highlight = 0;
@@ -68,29 +68,63 @@ void tui(videoArray *vidArr) {
             case 'q':
                 done = 1;
                 break;
+            case 'r':
+                tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+                return true;
         }
     }
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return;
+    return false;
 }
 
 int main(int argc, char *argv[]) {
+    
     char *json;
     char *query;
     char *post_url;
     char *payload;
-    videoArray *vidArr;
-    
+    bool input;
+    bool run = true;
+
     query = argHelper(argc, argv);
-    if (query != NULL) {
-        json = search(argv[1]);
+    while (run) {
+        videoArray *vidArr;
+        if (query == NULL) {
+            int e = 0;
+            clear();
+            printf("Search: ");
+            input = true;
+            query = malloc(sizeof(char)+1);
+            while(input) {
+                query[e] = fgetc(stdin);
+                if (query[e] != '\n') {
+                    e++;
+                    query = realloc(query, sizeof(char)*e+1);
+	            } else {
+		            input = 0;
+	            }
+            }
+        }
+        json = search(query);
         vidArr = parseJson(json);
         free(json);
         if (vidArr == NULL) {
             return(1);
         } else {
-            tui(vidArr);
+            run = tui(vidArr);
+            if (run) {
+                query = NULL;
+            }
         }
+        for (int i = 0; i < vidArr->count; ++i) {
+            free(vidArr->videos[i].title);
+            free(vidArr->videos[i].age);
+            free(vidArr->videos[i].length);
+            free(vidArr->videos[i].channel);
+            free(vidArr->videos[i].link);
+        }
+        free(vidArr->videos);
+        free(vidArr);
     }
     return(0);
 }

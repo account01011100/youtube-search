@@ -17,7 +17,6 @@ char *argHelper(int argc, char *argv[]) {
             } else if (arg[0] != '-'|| (arg[0] != '-' && arg[1] != '-')) {
                 query = arg;
             } else {
-                printf("Please see -h or --help for usage.\n");
                 return NULL;
             }
         }
