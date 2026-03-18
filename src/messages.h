@@ -4,8 +4,8 @@
 #define HELP_MSG \
     "YouTube Search TUI - Search and play YouTube videos from the terminal\n\n" \
     "USAGE:\n" \
-    "  youtube-search [QUERY]\n" \
-    "  youtube-search -h, --help\n\n" \
+    "  ytsearch [QUERY]\n" \
+    "  ytsearch -h, --help\n\n" \
     "ARGUMENTS:\n" \
     "  QUERY                 Search query for YouTube videos\n\n" \
     "OPTIONS:\n" \
@@ -17,7 +17,7 @@
     "  r                     New search\n" \
     "  q                     Quit\n\n" \
     "EXAMPLES:\n" \
-    "  youtube-search \"music video\"\n" \
-    "  youtube-search\n"
+    "  ytsearch \"music video\"\n" \
+    "  ytsearch\n"
 
 #endif
