@@ -3,19 +3,19 @@
 **youtube-search** is a command-line application that allows users to search for YouTube videos, display the results in a list, and play the selected video using **mpv**. This tool uses the YouTube's search API to fetch video data and presents it in a terminal-based user interface.
 
 ## Usage
-  youtube-search [QUERY]
-  youtube-search -h, --help
+  youtube-search [QUERY]   
+  youtube-search -h, --help   
 
-  INTERACTIVE CONTROLS:
-    w, k                  Move up in results
-    s, j                  Move down in results
-    Enter, p              Play selected video
-    r                     New search
-    q                     Quit
+  INTERACTIVE CONTROLS:   
+    w, k                  Move up in results   
+    s, j                  Move down in results   
+    Enter, p              Play selected video   
+    r                     New search   
+    q                     Quit   
 
-  EXAMPLES:
-    youtube-search "music video"
-    youtube-search
+  EXAMPLES:   
+    youtube-search "music video"   
+    youtube-search   
 
 ## Dependencies
 
