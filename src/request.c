@@ -16,7 +16,7 @@ static size_t write_cb(void *contents, size_t size, size_t nmemb, void *userp) {
 
     if (!ptr) {
         fprintf(stderr, "reallocating mem->memory failed\n");
-        return 0;
+        return(0);
     }
 
     mem->memory = ptr;
@@ -24,7 +24,7 @@ static size_t write_cb(void *contents, size_t size, size_t nmemb, void *userp) {
     mem->mem_size += realsize;
     mem->memory[mem->mem_size] = 0;
 
-    return realsize;
+    return(realsize);
 }
 
 char *search(char *query) {

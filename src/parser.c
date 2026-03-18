@@ -70,7 +70,7 @@ videoArray* parseJson(const char *jsonString) {
             if (!temp) {
                 fprintf(stderr, "reallocating videos array failed\n");
                 free(vidArr->videos);
-                return NULL;
+                return(NULL);
             }
             vidArr->videos = temp;
             
@@ -90,5 +90,5 @@ videoArray* parseJson(const char *jsonString) {
         }
     }
     cJSON_Delete(json);
-    return vidArr;
+    return(vidArr);
 }

@@ -70,11 +70,11 @@ bool tui(videoArray *vidArr) {
                 break;
             case 'r':
                 tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-                return true;
+                return(true);
         }
     }
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return false;
+    return(false);
 }
 
 int main(int argc, char *argv[]) {
